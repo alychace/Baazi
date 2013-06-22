@@ -52,14 +52,17 @@ class TestGame():
         self.load_map()
         pygame.display.set_caption("Test Game")
 
+        self.characters = pygame.sprite.Group()
+        self.obstacles = pygame.sprite.Group()
+        
+        self.town1()
+
         self.player= Hero()
         self.player.image = pygame.image.load("images/sprite1.png")
         self.player.rect = pygame.Rect(320, 240, 16, 32)
+        self.player.position = [320,240]
         self.player.image.convert()
-
-        self.entities = pygame.sprite.Group()
-        self.entities.add(self.player)
-        self.town1()
+        self.characters.add(self.player)
 
     def load_map(self):
         self.window = pygame.display.set_mode((640, 480), 0, 0)
@@ -74,27 +77,27 @@ class TestGame():
     def town1(self):
         self.house = Entity()
         self.house.image = pygame.image.load("images/house1.png")
-        self.house.rect = self.player.image.get_rect()
+        self.house.rect = self.house.image.get_rect()
         self.house.image.convert()
         self.house.position = (0,0)
         self.house.rect = pygame.Rect(0, 0, 64, 64)
-        self.entities.add(self.house)
+        self.obstacles.add(self.house)
 
         self.house2 = Entity()
         self.house2.image = pygame.image.load("images/house1.png")
-        self.house2.rect = self.player.image.get_rect()
+        self.house2.rect = self.house2.image.get_rect()
         self.house2.image.convert()
         self.house2.position = (132,0)
         self.house2.rect = pygame.Rect(132, 0, 64, 64)
-        self.entities.add(self.house2)
+        self.obstacles.add(self.house2)
 
         self.house3 = Entity()
         self.house3.image = pygame.image.load("images/house1.png")
-        self.house3.rect = self.player.image.get_rect()
+        self.house3.rect = self.house3.image.get_rect()
         self.house3.image.convert()
         self.house3.position = (264,0)
         self.house3.rect = pygame.Rect(264, 0, 64, 64)
-        self.entities.add(self.house3)
+        self.obstacles.add(self.house3)
 
 
     def show(self):
@@ -104,10 +107,14 @@ class TestGame():
         self.screen.blit(self.background, (0, 0))
 
         self.camera.update(self.player)
-        self.player.update()
+        self.player.update(self.obstacles)
 
-        for e in self.entities:
-            e.update()
+        for e in self.characters:
+            e.update(self.obstacles)
+            self.screen.blit(e.image, self.camera.apply(e))
+
+        for e in self.obstacles:
+            e.update(self.obstacles)
             self.screen.blit(e.image, self.camera.apply(e))
 
         pygame.display.update()

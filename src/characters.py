@@ -40,7 +40,7 @@ class Entity(pygame.sprite.Sprite):
         self.image.fill(Color("#0000FF"))
         self.image.convert()
         self.rect = Rect(1, 1, 32, 32)
-        self.position = (1,1)
+        self.position = [1,1]
         self.x_speed = 0
         self.y_speed = 0
         self.health = 10
@@ -75,15 +75,28 @@ class Entity(pygame.sprite.Sprite):
         self.vertical_stop()
         self.horizontal_stop()
 
-    def update(self):
+    def update(self, obstacles):
         self.rect.left += self.x_speed
         self.rect.top += self.y_speed
         self.position = (self.position[0] + self.x_speed, self.position[1] + self.y_speed)
+        #If colliding, go back
+        if pygame.sprite.spritecollide(self,obstacles,False):
+            newy = 5
+            self.position = self.position[0], self.position[1] - self.y_speed
+
+        if pygame.sprite.spritecollide(self,obstacles,False): 
+            self.position = self.position[0] - self.x_speed, self.position[1]
+
+        self.rect.left = self.position[0]
+        self.rect.top = self.position[1]
 
 class Hero(Entity):
 
     def __init__(self):
         Entity.__init__(self)
+        self.health = 10
+        self.life = 5
+        self.inventory = []
         print("Test complete")
 
     def shoot(self):
