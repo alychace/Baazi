@@ -13,8 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with Baazi. If not, see <http://www.gnu.org/licenses/>.
 
-import sys, os, pygame
-
+import os
+import pygame
 from pygame.locals import *
 
 def load_image(name, colorkey=None):
