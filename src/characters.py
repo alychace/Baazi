@@ -40,15 +40,6 @@ class Entity(pygame.sprite.Sprite):
         self.position = [1,1]
         self.x_speed = 0
         self.y_speed = 0
-        self.health = 10
-
-    def decrease_health(self, amount):
-        self.health = self.health - amount
-        if self.health <= 0:
-            print("dead!")
-
-    def increase_health(self, amount):
-        self.health += amount
 
     def move_left(self):
         self.x_speed = 5
@@ -86,10 +77,21 @@ class Entity(pygame.sprite.Sprite):
         self.rect.left = self.position[0]
         self.rect.top = self.position[1]
 
-class House(Entity):
+class StationaryEntity(pygame.sprite.Sprite):
 
     def __init__(self):
-        Entity.__init__(self)
+        pygame.sprite.Sprite.__init__(self)
+        self.rect = Rect(1, 1, 32, 32)
+        self.position = [0,0]
+
+    def update(self, obstacles):
+        self.rect.left = self.position[0]
+        self.rect.top = self.position[1]
+
+class House(StationaryEntity):
+
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("images/house1.png")
         self.rect = self.image.get_rect()
         self.image.convert()
@@ -98,10 +100,17 @@ class Hero(Entity):
 
     def __init__(self):
         Entity.__init__(self)
-        self.health = 10
+        self.health = 100
         self.life = 5
         self.inventory = []
-        print("Test complete")
 
     def shoot(self):
         print("shoot!")
+
+    def decrease_health(self, amount):
+        self.health = self.health - amount
+        if self.health <= 0:
+            print("dead!")
+
+    def increase_health(self, amount):
+        self.health += amount

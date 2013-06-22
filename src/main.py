@@ -29,13 +29,12 @@ HALF_HEIGHT = 240
 def camera_func(camera, target_rect):
     l, t, _, _ = target_rect
     _, _, w, h = camera
-    return Rect(-l+HALF_WIDTH, -t+HALF_HEIGHT, w, h)
-
+    return pygame.Rect(-l+HALF_WIDTH, -t+HALF_HEIGHT, w, h)
 
 class Camera(object):
     def __init__(self):
         self.camera_func = camera_func
-        self.state = Rect(0, 0, 640*32, 480*32)
+        self.state = Rect(0, 0, WIN_WIDTH*32, WIN_HEIGHT*32)
 
     def apply(self, target):
         return target.rect.move(self.state.topleft)
@@ -43,7 +42,7 @@ class Camera(object):
     def update(self, target):
         self.state = self.camera_func(self.state, target.rect)
 
-class TestGame():
+class Baazi():
     def __init__(self):
         pygame.display.init()
 
@@ -65,7 +64,7 @@ class TestGame():
         self.characters.add(self.player)
 
     def load_map(self):
-        self.window = pygame.display.set_mode((640, 480), 0, 0)
+        self.window = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT), 0, 0)
         self.screen = pygame.display.get_surface()
         fullname = os.path.join('images', "map1.png")
         fullname = os.path.realpath(fullname)
@@ -73,23 +72,18 @@ class TestGame():
         self.background = pygame.image.load(fullname)
         self.background.convert()
 
-
     def town1(self):
         self.house = House()
         self.house.position = (0,0)
-        self.house.rect = pygame.Rect(0, 0, 64, 64)
         self.obstacles.add(self.house)
 
         self.house2 = House()
         self.house2.position = (132,0)
-        self.house2.rect = pygame.Rect(132, 0, 64, 64)
         self.obstacles.add(self.house2)
 
         self.house3 = House()
         self.house3.position = (264,0)
-        self.house3.rect = pygame.Rect(264, 0, 64, 64)
         self.obstacles.add(self.house3)
-
 
     def show(self):
         self.eventInput(pygame.event.get())
@@ -132,9 +126,8 @@ class TestGame():
                 print(event)
 
 if __name__ == '__main__':
-    test_game = TestGame()
+    baazi = Baazi()
     while True:
         clock = pygame.time.Clock()
         clock.tick(60)
-        test_game.show()
-        #main()
+        baazi.show()
