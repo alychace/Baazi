@@ -81,7 +81,6 @@ class Entity(pygame.sprite.Sprite):
         self.position = (self.position[0] + self.x_speed, self.position[1] + self.y_speed)
         #If colliding, go back
         if pygame.sprite.spritecollide(self,obstacles,False):
-            newy = 5
             self.position = self.position[0], self.position[1] - self.y_speed
 
         if pygame.sprite.spritecollide(self,obstacles,False): 
