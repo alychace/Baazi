@@ -86,7 +86,7 @@ class Baazi():
         self.obstacles.add(self.house3)
 
     def show(self):
-        self.eventInput(pygame.event.get())
+        self.event_input(pygame.event.get())
         
         self.screen = pygame.display.get_surface()
         self.screen.blit(self.background, (0, 0))
@@ -104,7 +104,7 @@ class Baazi():
 
         pygame.display.update()
 
-    def eventInput(self, events):
+    def event_input(self, events):
         for event in events: 
             if event.type == QUIT: 
                 sys.exit(0)
