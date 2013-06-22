@@ -50,7 +50,7 @@ class TestGame():
         self.camera = Camera()
 
         self.load_map()
-        pygame.display.set_caption("Test Game")
+        pygame.display.set_caption("Baazi")
 
         self.characters = pygame.sprite.Group()
         self.obstacles = pygame.sprite.Group()
@@ -75,26 +75,17 @@ class TestGame():
 
 
     def town1(self):
-        self.house = Entity()
-        self.house.image = pygame.image.load("images/house1.png")
-        self.house.rect = self.house.image.get_rect()
-        self.house.image.convert()
+        self.house = House()
         self.house.position = (0,0)
         self.house.rect = pygame.Rect(0, 0, 64, 64)
         self.obstacles.add(self.house)
 
-        self.house2 = Entity()
-        self.house2.image = pygame.image.load("images/house1.png")
-        self.house2.rect = self.house2.image.get_rect()
-        self.house2.image.convert()
+        self.house2 = House()
         self.house2.position = (132,0)
         self.house2.rect = pygame.Rect(132, 0, 64, 64)
         self.obstacles.add(self.house2)
 
-        self.house3 = Entity()
-        self.house3.image = pygame.image.load("images/house1.png")
-        self.house3.rect = self.house3.image.get_rect()
-        self.house3.image.convert()
+        self.house3 = House()
         self.house3.position = (264,0)
         self.house3.rect = pygame.Rect(264, 0, 64, 64)
         self.obstacles.add(self.house3)
@@ -125,7 +116,6 @@ class TestGame():
                 sys.exit(0)
             elif event.type == KEYDOWN and event.key == K_LEFT:
                 self.player.move_right()
-                print("down")
             elif event.type == KEYDOWN and event.key == K_RIGHT:
                 self.player.move_left()
             elif event.type == KEYDOWN and event.key == K_UP:
@@ -138,10 +128,6 @@ class TestGame():
                 self.player.vertical_stop()
             elif event.type == KEYUP and event.key == K_SPACE:
                 self.player.shoot()
-                
-                #missle = Missle()
-                #missle.position = self.spaceShip.position
-                #self.missles.append(missle)
             else: 
                 print(event)
 

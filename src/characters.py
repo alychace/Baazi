@@ -36,9 +36,6 @@ class Entity(pygame.sprite.Sprite):
 
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((32,32))
-        self.image.fill(Color("#0000FF"))
-        self.image.convert()
         self.rect = Rect(1, 1, 32, 32)
         self.position = [1,1]
         self.x_speed = 0
@@ -79,7 +76,7 @@ class Entity(pygame.sprite.Sprite):
         self.rect.left += self.x_speed
         self.rect.top += self.y_speed
         self.position = (self.position[0] + self.x_speed, self.position[1] + self.y_speed)
-        #If colliding, go back
+        # If colliding, go back
         if pygame.sprite.spritecollide(self,obstacles,False):
             self.position = self.position[0], self.position[1] - self.y_speed
 
@@ -88,6 +85,14 @@ class Entity(pygame.sprite.Sprite):
 
         self.rect.left = self.position[0]
         self.rect.top = self.position[1]
+
+class House(Entity):
+
+    def __init__(self):
+        Entity.__init__(self)
+        self.image = pygame.image.load("images/house1.png")
+        self.rect = self.image.get_rect()
+        self.image.convert()
 
 class Hero(Entity):
 
