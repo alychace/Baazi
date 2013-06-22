@@ -81,8 +81,6 @@ class StationaryEntity(pygame.sprite.Sprite):
 
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.rect = Rect(1, 1, 32, 32)
-        self.position = [0,0]
 
     def update(self, obstacles):
         self.rect.left = self.position[0]
@@ -91,7 +89,7 @@ class StationaryEntity(pygame.sprite.Sprite):
 class House(StationaryEntity):
 
     def __init__(self):
-        pygame.sprite.Sprite.__init__(self)
+        StationaryEntity.__init__(self)
         self.image = pygame.image.load("images/house1.png")
         self.rect = self.image.get_rect()
         self.image.convert()
