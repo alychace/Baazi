@@ -50,8 +50,14 @@ class Entity(pygame.sprite.Sprite):
     def move_up(self):
         self.y_speed = -5
 
-    def move_down(self):
+    def move_down(self, speed):
         self.y_speed = 5
+
+    def vertical_move(self, speed):
+        self.y_speed = speed
+
+    def horizontal_move(self, speed):
+        self.x_speed = speed
 
     def horizontal_stop(self):
         self.x_speed = 0
@@ -91,6 +97,14 @@ class House(StationaryEntity):
     def __init__(self):
         StationaryEntity.__init__(self)
         self.image = pygame.image.load("images/house1.png")
+        self.rect = self.image.get_rect()
+        self.image.convert()
+
+class Rock(StationaryEntity):
+
+    def __init__(self):
+        StationaryEntity.__init__(self)
+        self.image = pygame.image.load("images/sprite2.png")
         self.rect = self.image.get_rect()
         self.image.convert()
 

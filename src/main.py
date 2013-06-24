@@ -21,10 +21,10 @@ import time
 from pygame.locals import *
 from characters import *
 
-WIN_WIDTH = 640
-WIN_HEIGHT = 480
-HALF_WIDTH = 320
-HALF_HEIGHT = 240
+WIN_WIDTH = 800
+WIN_HEIGHT = 600
+HALF_WIDTH = 400
+HALF_HEIGHT = 300
 
 def camera_func(camera, target_rect):
     l, t, _, _ = target_rect
@@ -73,17 +73,55 @@ class Baazi():
         self.background.convert()
 
     def town1(self):
-        self.house = House()
-        self.house.position = (0,0)
-        self.obstacles.add(self.house)
+        town = [
+        "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR    RRRRRRR",
+        "RH   H                           HR",
+        "R                                          R",
+        "R                                          R",
+        "R                                          R",
+        "R                                          R",
+        "R                                          R",
+        "R                                          R",
+        "R    RRRRRRRR                              R",
+        "R                                          R",
+        "R                              RRRRRRR     R",
+        "R                   RRRRRR                 R",
+        "R                                          R",
+        "R         RRRRRRR                          R",
+        "R                                          R",
+        "R                     RRRRRR               R",
+        "R                                          R",
+        "R   RRRRRRRRRRR                            R",
+        "R                                          R",
+        "R                 RRRRRRRRRRR              R",
+        "R                                          R",
+        "R                                          R",
+        "R                                          R",
+        "R                                          R",
+        "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR",]
 
-        self.house2 = House()
-        self.house2.position = (132,0)
-        self.obstacles.add(self.house2)
+        x = y = 0
 
-        self.house3 = House()
-        self.house3.position = (264,0)
-        self.obstacles.add(self.house3)
+        for row in town:
+            for col in row:
+                if col == "R":
+                    rock = Rock()
+                    rock.position = (x,y)
+                    self.obstacles.add(rock)
+                    size_x = 16
+                    size_y = 16
+                elif col == "H":
+                    house = House()
+                    house.position = [x,y]
+                    self.obstacles.add(house)
+                    size_x = 64
+                    size_y = 64
+                else:
+                    size_x = 16
+                    size_y = 16
+                x += size_x
+            y += size_y
+            x = 0
 
     def show(self):
         self.event_input(pygame.event.get())
@@ -109,13 +147,13 @@ class Baazi():
             if event.type == QUIT: 
                 sys.exit(0)
             elif event.type == KEYDOWN and event.key == K_LEFT:
-                self.player.move_right()
+                self.player.horizontal_move(-5)
             elif event.type == KEYDOWN and event.key == K_RIGHT:
-                self.player.move_left()
+                self.player.horizontal_move(5)
             elif event.type == KEYDOWN and event.key == K_UP:
-                self.player.move_up()
+                self.player.vertical_move(-5)
             elif event.type == KEYDOWN and event.key == K_DOWN:
-                self.player.move_down()
+                self.player.vertical_move(5)
             elif event.type == KEYUP and (event.key == K_LEFT or event.key == K_RIGHT):
                 self.player.horizontal_stop()
             elif event.type == KEYUP and (event.key == K_UP or event.key == K_DOWN):
