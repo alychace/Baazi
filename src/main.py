@@ -31,6 +31,17 @@ def camera_func(camera, target_rect):
     _, _, w, h = camera
     return pygame.Rect(-l+HALF_WIDTH, -t+HALF_HEIGHT, w, h)
 
+def camera_func(camera, target_rect):
+    l, t, _, _ = target_rect
+    _, _, w, h = camera
+    l, t, _, _ = -l+HALF_WIDTH, -t+HALF_HEIGHT, w, h
+
+    l = min(0, l)                           # stop scrolling at the left edge
+    l = max(-(camera.width-WIN_WIDTH), l)   # stop scrolling at the right edge
+    t = max(-(camera.height-WIN_HEIGHT), t) # stop scrolling at the bottom
+    t = min(0, t)                           # stop scrolling at the top
+    return Rect(l, t, w, h)
+
 class Camera(object):
     def __init__(self):
         self.camera_func = camera_func
@@ -57,7 +68,7 @@ class Baazi():
         self.town1()
 
         self.player= Hero()
-        self.player.image = pygame.image.load("images/sprite1.png")
+        self.player.image = pygame.image.load("images/player1.png")
         self.player.rect = pygame.Rect(320, 240, 16, 32)
         self.player.position = [320,240]
         self.player.image.convert()
@@ -74,7 +85,7 @@ class Baazi():
 
     def town1(self):
         town = [
-        "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR    RRRRRRR",
+        "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR",
         "RH   H                           HR",
         "R                                          R",
         "R                                          R",
@@ -98,7 +109,7 @@ class Baazi():
         "R                                          R",
         "R                                          R",
         "R                                          R",
-        "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR",]
+        "RRRRRRRRRRRRRRRRRRRRRRRRRRRRR      RRRRRRRRR",]
 
         x = y = 0
 

@@ -41,18 +41,6 @@ class Entity(pygame.sprite.Sprite):
         self.x_speed = 0
         self.y_speed = 0
 
-    def move_left(self):
-        self.x_speed = 5
-
-    def move_right(self):
-        self.x_speed = -5
-
-    def move_up(self):
-        self.y_speed = -5
-
-    def move_down(self, speed):
-        self.y_speed = 5
-
     def vertical_move(self, speed):
         self.y_speed = speed
 
