@@ -21,25 +21,28 @@ import time
 from pygame.locals import *
 from characters import *
 
+# Set the resolution in which the game runs.
 WIN_WIDTH = 800
 WIN_HEIGHT = 600
 HALF_WIDTH = 400
 HALF_HEIGHT = 300
 
 def camera_func(camera, target_rect):
+    """This is a really simple camera that never stops scrolling"""
     l, t, _, _ = target_rect
     _, _, w, h = camera
     return pygame.Rect(-l+HALF_WIDTH, -t+HALF_HEIGHT, w, h)
 
 def camera_func(camera, target_rect):
+    """This is a smart camera that respects boundaries"""
     l, t, _, _ = target_rect
     _, _, w, h = camera
     l, t, _, _ = -l+HALF_WIDTH, -t+HALF_HEIGHT, w, h
 
-    l = min(0, l)                           # stop scrolling at the left edge
-    l = max(-(camera.width-WIN_WIDTH), l)   # stop scrolling at the right edge
-    t = max(-(camera.height-WIN_HEIGHT), t) # stop scrolling at the bottom
-    t = min(0, t)                           # stop scrolling at the top
+    l = min(0, l)                           # Stops scrolling at the left edge
+    l = max(-(camera.width-WIN_WIDTH), l)   
+    t = max(-(camera.height-WIN_HEIGHT), t) 
+    t = min(0, t)                           # Stops scrolling at the top
     return Rect(l, t, w, h)
 
 class Camera(object):
@@ -59,14 +62,16 @@ class Baazi():
 
         self.camera = Camera()
 
-        self.load_map()
+        self.load_map("map1.png")
         pygame.display.set_caption("Baazi")
 
         self.characters = pygame.sprite.Group()
         self.obstacles = pygame.sprite.Group()
+        self.portals = pygame.sprite.Group()
         
-        self.town1()
+        self.town1() # Loads a demo level.
 
+        # Now it's time to add our player to the map.
         self.player= Hero()
         self.player.image = pygame.image.load("images/player1.png")
         self.player.rect = pygame.Rect(320, 240, 16, 32)
@@ -74,22 +79,23 @@ class Baazi():
         self.player.image.convert()
         self.characters.add(self.player)
 
-    def load_map(self):
+    def load_map(self, mapname):
         self.window = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT), 0, 0)
         self.screen = pygame.display.get_surface()
-        fullname = os.path.join('images', "map1.png")
+        fullname = os.path.join('images', mapname)
         fullname = os.path.realpath(fullname)
 
         self.background = pygame.image.load(fullname)
         self.background.convert()
 
     def town1(self):
+        """Builds a simple town to explore."""
         town = [
         "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR",
         "RH   H                           HR",
         "R                                          R",
         "R                                          R",
-        "R                                          R",
+        "R D      D                              D  R",
         "R                                          R",
         "R                                          R",
         "R                                          R",
@@ -127,6 +133,12 @@ class Baazi():
                     self.obstacles.add(house)
                     size_x = 64
                     size_y = 64
+                elif col == "D":
+                    door = Door()
+                    door.position = [x,y]
+                    self.portals.add(door)
+                    size_x = 16
+                    size_y = 16
                 else:
                     size_x = 16
                     size_y = 16
@@ -134,6 +146,12 @@ class Baazi():
             y += size_y
             x = 0
 
+    def load_house(self):
+        for e in self.obstacles:
+            e.kill()
+        for e in self.portals:
+            e.kill()
+        self.load_map("map5.png")
     def show(self):
         self.event_input(pygame.event.get())
         
@@ -141,16 +159,27 @@ class Baazi():
         self.screen.blit(self.background, (0, 0))
 
         self.camera.update(self.player)
-        self.player.update(self.obstacles)
-
+        self.player.update(self.obstacles, self.portals)
         for e in self.characters:
-            e.update(self.obstacles)
+            if pygame.sprite.spritecollide(self.player,self.obstacles,False):
+                self.player.position = self.player.position[0] - self.player.x_speed, self.player.position[1] - self.player.y_speed
+                self.player.y_speed = 0
+                self.player.x_speed = 0
+            if pygame.sprite.spritecollide(self.player, self.portals, False):
+                self.load_house()
+            e.update(self.obstacles, self.portals)
             self.screen.blit(e.image, self.camera.apply(e))
 
         for e in self.obstacles:
             e.update(self.obstacles)
             self.screen.blit(e.image, self.camera.apply(e))
 
+        for e in self.portals:
+            e.update(self.portals)
+            self.screen.blit(e.image, self.camera.apply(e))
+
+
+        
         pygame.display.update()
 
     def event_input(self, events):

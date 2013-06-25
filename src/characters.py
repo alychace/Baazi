@@ -57,16 +57,19 @@ class Entity(pygame.sprite.Sprite):
         self.vertical_stop()
         self.horizontal_stop()
 
-    def update(self, obstacles):
+    def update(self, obstacles, portals):
         self.rect.left += self.x_speed
         self.rect.top += self.y_speed
         self.position = (self.position[0] + self.x_speed, self.position[1] + self.y_speed)
         # If colliding, go back
-        if pygame.sprite.spritecollide(self,obstacles,False):
-            self.position = self.position[0], self.position[1] - self.y_speed
+        # if pygame.sprite.spritecollide(self,obstacles,False):
+        #     self.position = self.position[0], self.position[1] - self.y_speed
 
-        if pygame.sprite.spritecollide(self,obstacles,False): 
-            self.position = self.position[0] - self.x_speed, self.position[1]
+        # if pygame.sprite.spritecollide(self,obstacles,False): 
+        #     self.position = self.position[0] - self.x_speed, self.position[1]
+
+        #if pygame.sprite.spritecollide(self, portals, False):
+        #    print "test"
 
         self.rect.left = self.position[0]
         self.rect.top = self.position[1]
@@ -84,7 +87,15 @@ class House(StationaryEntity):
 
     def __init__(self):
         StationaryEntity.__init__(self)
-        self.image = pygame.image.load("images/house1.png")
+        self.image = pygame.image.load("images/house2.png")
+        self.rect = self.image.get_rect()
+        self.image.convert()
+
+class Door(StationaryEntity):
+
+    def __init__(self):
+        StationaryEntity.__init__(self)
+        self.image = pygame.image.load("images/door1.png")
         self.rect = self.image.get_rect()
         self.image.convert()
 
