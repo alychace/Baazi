@@ -1,5 +1,5 @@
 #!/usr/bin/env python2
-# Copyright (C) 2013 Thomas Chace <tchace1@student.gsu.edu>
+# Copyright (C) 2013 Marilyn Chace <marilyn@marilync.co>
 
 # Baazi is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
